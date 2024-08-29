@@ -1,84 +1,64 @@
+
 pipeline {
     agent any
-    
-    triggers {
-        pollSCM('* * * * *')  
-    }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                echo 'Using Maven to compile and package the code.'
+                
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests...'
-                
-                echo 'Using JUnit and TestNG for testing.'
+                echo 'Running Unit and Integration Tests...'
+                echo 'for the test'
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo 'Analyzing the code...'
-                echo 'Using SonarQube for code analysis.'
+                echo 'Running Code Analysis...'
+                
             }
         }
+
         stage('Security Scan') {
             steps {
-                echo 'Performing security scan...'
+                echo 'Running Security Scan...'
                 
-                echo 'Using OWASP Dependency-Check for security scan.'
-            }
-            post {
-                always {
-                    script {
-                        // Send email notification with stage status and logs
-                        emailext (
-                            to: 'coopergoullet@gmail.com',
-                            subject: "Security Scan Stage.",
-                            body: "Security Scan stage.",
-                            
-                        )
-                    }
-                }
             }
         }
+
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging...'
+                echo 'Deploying to Staging...'
                 
-                echo 'Deploying application to AWS EC2 staging instance.'
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging...'
+                echo 'Running Integration Tests on Staging...'
                 
-                echo 'Using TestNG to run integration tests on staging environment.'
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production...'
+                echo 'Deploying to Production...'
                 
-                echo 'Deploying application to AWS EC2 production instance.'
             }
         }
     }
 
     post {
         always {
-            script {
-                // Send email notification after Unit and Integration Tests stage
-                emailext (
-                    to: 'coopergoullet@gmail.com',
-                    subject: "Unit and Integration Tests Stage",
-                    body: "Unit and Integration Tests stage.",
-                    
-                )
-            }
+            echo 'Sending email notification...'
+            mail to: 'coopergoullet@gmail.com',
+                 subject: "Build with git",
+                 body: "Build completed with status: ${currentBuild.result}"
         }
     }
 }
