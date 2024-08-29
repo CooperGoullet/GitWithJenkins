@@ -37,9 +37,9 @@ pipeline {
                         // Send email notification with stage status and logs
                         emailext (
                             to: 'coopergoullet@gmail.com',
-                            subject: "Security Scan Stage - ${currentBuild.currentResult}",
-                            body: "Security Scan stage ${currentBuild.currentResult}. Check the attached logs.",
-                            attachLog: true
+                            subject: "Security Scan Stage.",
+                            body: "Security Scan stage.",
+                            
                         )
                     }
                 }
@@ -74,9 +74,9 @@ pipeline {
                 // Send email notification after Unit and Integration Tests stage
                 emailext (
                     to: 'coopergoullet@gmail.com',
-                    subject: "Unit and Integration Tests Stage - ${currentBuild.currentResult}",
-                    body: "Unit and Integration Tests stage ${currentBuild.currentResult}. Check the attached logs.",
-                    attachLog: true
+                    subject: "Unit and Integration Tests Stage",
+                    body: "Unit and Integration Tests stage.",
+                    
                 )
             }
         }
