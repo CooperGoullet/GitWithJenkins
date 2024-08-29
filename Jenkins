@@ -9,8 +9,14 @@ pipeline {
                 
             }
         }
-
+    
         stage('Unit and Integration Tests') {
+            steps {
+                echo 'Running Unit and Integration Tests...'
+                echo 'for the test'
+            }
+        }
+        stage('Extra teast') {
             steps {
                 echo 'Running Unit and Integration Tests...'
                 echo 'for the test'
