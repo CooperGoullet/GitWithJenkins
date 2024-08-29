@@ -1,101 +1,63 @@
 pipeline {
     agent any
 
-    environment {
-        RECIPIENT = 'coopergoullet@gmail.com'
-        SMTP_HOST = 'smtp.gmail.com'
-        SMTP_PORT = '465'
-        SMTP_USERNAME = 'coopergoullet@gmail.com'
-        SMTP_PASSWORD = 'wykj dext wpah maag'  
-    }
-
     stages {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                
-                sh 'mvn clean install'
+                bat 'build.bat'
             }
         }
+
         stage('Unit and Integration Tests') {
             steps {
-                echo 'Running unit and integration tests...'
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    script {
-                        if (currentBuild.currentResult == 'FAILURE') {
-                            mail to: "$RECIPIENT",
-                                 subject: "Jenkins Pipeline - Unit Tests Failed",
-                                 body: "Unit and Integration Tests have failed.",
-                                 mimeType: 'text/html'
-                        }
-                    }
-                }
+                echo 'Running Unit and Integration Tests...'
+                bat 'run-tests.bat'
             }
         }
+
         stage('Code Analysis') {
             steps {
-                echo 'Analyzing code quality...'
-                
-                sh 'mvn sonar:sonar'
+                echo 'Running Code Analysis...'
+                bat 'run-code-analysis.bat'
             }
         }
+
         stage('Security Scan') {
             steps {
-                echo 'Running security scan...'
-
-                sh 'mvn org.owasp:dependency-check-maven:check'
-            }
-            post {
-                always {
-                    script {
-                        if (currentBuild.currentResult == 'FAILURE') {
-                            mail to: "$RECIPIENT",
-                                 subject: "Jenkins Pipeline - Security Scan Failed",
-                                 body: "Security Scan has failed. Please check the Jenkins logs for details.",
-                                 mimeType: 'text/html'
-                        }
-                    }
-                }
+                echo 'Running Security Scan...'
+                bat 'run-security-scan.bat'
             }
         }
+
         stage('Deploy to Staging') {
             steps {
-                echo 'Deploying to staging...'
-
-                sh 'scp target/myapp.war user@staging-server:/opt/tomcat/webapps'
+                echo 'Deploying to Staging...'
+                bat 'deploy-staging.bat'
             }
         }
+
         stage('Integration Tests on Staging') {
             steps {
-                echo 'Running integration tests on staging...'
-
-                sh 'mvn verify -Pstaging'
+                echo 'Running Integration Tests on Staging...'
+                bat 'run-staging-tests.bat'
             }
         }
+
         stage('Deploy to Production') {
             steps {
-                echo 'Deploying to production...'
-
-                sh 'scp target/myapp.war user@production-server:/opt/tomcat/webapps'
+                echo 'Deploying to Production...'
+                bat 'deploy-production.bat'
             }
         }
     }
 
     post {
-        success {
-            mail to: "$RECIPIENT",
-                 subject: "Jenkins Pipeline - Build Success",
-                 body: "The build has been successfully completed and deployed.",
-                 mimeType: 'text/html'
-        }
-        failure {
-            mail to: "$RECIPIENT",
-                 subject: "Jenkins Pipeline - Build Failed",
-                 body: "The build has failed. Please check the Jenkins logs for details.",
-                 mimeType: 'text/html'
+        always {
+            echo 'Sending email notification...'
+            mail to: 'coopergoullet@gmail.com',
+                 subject: "Build with git",
+                 body: "Build completed with status: ${currentBuild.result}"
         }
     }
 }
