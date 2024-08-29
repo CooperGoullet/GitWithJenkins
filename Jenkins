@@ -30,6 +30,14 @@ pipeline {
                 echo 'Running Security Scan...'
                 
             }
+            post {
+                always {
+                    echo 'Sending email notification...'
+                    mail to: 'coopergoullet@gmail.com',
+                         subject: "Security scan",
+                         body: "Scan completed"
+                }
+            }
         }
 
         stage('Deploy to Staging') {
