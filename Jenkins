@@ -16,10 +16,10 @@ pipeline {
                 echo 'for the test'
             }
         }
-        stage('Extra teast') {
+        stage('Code Analysis') {
             steps {
-                echo 'Running Unit and Integration Tests...'
-                echo 'for the test'
+                echo 'Analtsising code...'
+                
             }
         }
 
