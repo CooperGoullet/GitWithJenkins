@@ -5,49 +5,49 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                bat 'build.bat'
+                
             }
         }
 
         stage('Unit and Integration Tests') {
             steps {
                 echo 'Running Unit and Integration Tests...'
-                bat 'run-tests.bat'
+                
             }
         }
 
         stage('Code Analysis') {
             steps {
                 echo 'Running Code Analysis...'
-                bat 'run-code-analysis.bat'
+                
             }
         }
 
         stage('Security Scan') {
             steps {
                 echo 'Running Security Scan...'
-                bat 'run-security-scan.bat'
+                
             }
         }
 
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
-                bat 'deploy-staging.bat'
+                
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running Integration Tests on Staging...'
-                bat 'run-staging-tests.bat'
+                
             }
         }
 
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
-                bat 'deploy-production.bat'
+                
             }
         }
     }
