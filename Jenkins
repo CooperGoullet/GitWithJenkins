@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -6,7 +5,6 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
-                
             }
         }
     
@@ -18,24 +16,21 @@ pipeline {
         }
         stage('Code Analysis') {
             steps {
-                echo 'Analtsising code...'
-                
+                echo 'Analyzing code...'
             }
         }
-
-        
 
         stage('Security Scan') {
             steps {
                 echo 'Running Security Scan...'
-                
             }
             post {
                 always {
-                    echo 'Sending email notification...'
-                    mail to: 'coopergoullet@gmail.com',
-                         subject: "Security scan",
-                         body: "Scan completed"
+                    echo 'Sending email notification with log attached...'
+                    emailext to: 'coopergoullet@gmail.com',
+                             subject: "Security Scan Completed",
+                             body: "The security scan stage has completed. Please find the logs attached.",
+                             attachLog: true
                 }
             }
         }
@@ -43,31 +38,29 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
-                
             }
         }
 
         stage('Integration Tests on Staging') {
             steps {
                 echo 'Running Integration Tests on Staging...'
-                
             }
         }
 
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
-                
             }
         }
     }
 
     post {
         always {
-            echo 'Sending email notification...'
-            mail to: 'coopergoullet@gmail.com',
-                 subject: "Build with git",
-                 body: "Build completed with status: ${currentBuild.result}"
+            echo 'Sending email notification with log attached...'
+            emailext to: 'coopergoullet@gmail.com',
+                     subject: "Build Completed",
+                     body: "The build has completed with status: ${currentBuild.result}. Please find the logs attached.",
+                     attachLog: true
         }
     }
 }
