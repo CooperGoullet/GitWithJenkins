@@ -30,7 +30,7 @@ pipeline {
                     emailext to: 'coopergoullet@gmail.com',
                              subject: "Security Scan Completed",
                              body: "The security scan stage has completed. Please find the logs attached.",
-                             attachLog: true, compressLog true
+                             attachLog: true, compressLog: true
                 }
             }
         }
@@ -60,7 +60,7 @@ pipeline {
             emailext to: 'coopergoullet@gmail.com',
                      subject: "Build Completed",
                      body: "The build has completed with status: ${currentBuild.result}. Please find the logs attached.",
-                     attachLog: true, compressLog true
+                     attachLog: true, compressLog: true
         }
     }
 }
