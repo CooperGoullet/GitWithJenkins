@@ -26,13 +26,13 @@ pipeline {
             }
             post {
                 always {
-                    steps {
-                        echo 'Sending email notification with log attached...'
-                        emailext to: 'coopergoullet@gmail.com',
-                                 subject: "Security Scan Completed",
-                                 body: "The security scan stage has completed. Please find the logs attached.",
-                                 attachLog: true, compressLog: true
-                    }
+                    emailext( 
+                            to: 'coopergoullet@gmail.com',
+                            subject: "Security Scan Completed",
+                            body: "The security scan stage has completed. Please find the logs attached.",
+                            attachLog: true, compressLog: true
+                        )
+                    
                 }
             }
         }
@@ -58,13 +58,12 @@ pipeline {
 
     post {
         always {
-            steps {
-                echo 'Sending email notification with log attached...'
-                emailext to: 'coopergoullet@gmail.com',
-                         subject: "Build Completed",
-                         body: "The build has completed with status: ${currentBuild.result}. Please find the logs attached.",
-                         attachLog: true, compressLog: true
-            }
+                emailext(
+                    to: 'coopergoullet@gmail.com',
+                    subject: "Build Completed",
+                    body: "The build has completed with status: ${currentBuild.result}. Please find the logs attached.",
+                    attachLog: true, compressLog: true
+                )
         }
     }
 }
