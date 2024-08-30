@@ -5,6 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the project...'
+                echo 'mvn clean package'
             }
         }
     
@@ -12,17 +13,20 @@ pipeline {
             steps {
                 echo 'Running Unit and Integration Tests...'
                 echo 'for the test'
+                echo 'mvn test'
             }
         }
         stage('Code Analysis') {
             steps {
                 echo 'Analyzing code...'
+                echo 'mvn verify'
             }
         }
 
         stage('Security Scan') {
             steps {
                 echo 'Running Security Scan...'
+                echo 'mvn org.owasp:dependency-check-maven:check'
             }
             post {
                 always {
@@ -40,6 +44,7 @@ pipeline {
         stage('Deploy to Staging') {
             steps {
                 echo 'Deploying to Staging...'
+                echo 'mvn deploy -Pstaging'
             }
         }
 
@@ -52,6 +57,7 @@ pipeline {
         stage('Deploy to Production') {
             steps {
                 echo 'Deploying to Production...'
+                echo 'mvn deploy -Pproduction'
             }
         }
     }
