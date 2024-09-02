@@ -52,6 +52,17 @@ pipeline {
             steps {
                 echo 'Running Integration Tests on Staging...'
             }
+            post {
+                always {
+                    emailext( 
+                            to: 'coopergoullet@gmail.com',
+                            subject: "Security Scan Completed",
+                            body: "The security scan stage has completed. Please find the logs attached.",
+                            attachLog: true, compressLog: true
+                        )
+                    
+                }
+            }
         }
 
         stage('Deploy to Production') {
