@@ -56,8 +56,8 @@ pipeline {
                 always {
                     emailext( 
                             to: 'coopergoullet@gmail.com',
-                            subject: "Security Scan Completed",
-                            body: "The security scan stage has completed. Please find the logs attached.",
+                            subject: "Testing  Completed",
+                            body: "The testing scan stage has completed. Please find the logs attached.",
                             attachLog: true, compressLog: true
                         )
                     
